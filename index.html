@@ -42,17 +42,20 @@
             
             let title = document.getElementById("title");
             let description = document.getElementById("description");
-            let now = new Date()
-            let created_at = now.toLocaleString()
 
-            let data = {
+            var data = {
                 "title": title,
-                "description": description,
-                "created_at": created_at.toString()
+                "description": description
             }
-            let jsonData = JSON.stringify(data);
+            var formData = new FormData()
+            formData.append("title", title)
+            formData.append("description", description)
+
             const ajax = new XMLHttpRequest();
-            ajax.onload = function() {
+            ajax.open("POST", "https://faux-api.com/api/v1/posts_4159209407585496");
+            ajax.setRequestHeader("Content-Type", "application/json");
+
+            ajax.onreadystatechange = function() {
                 if (ajax.status == 201) {
                     console.log(ajax.status, ajax);
                     
@@ -66,9 +69,8 @@
             </div>`;
                 }
             };
-            ajax.open("POST", "https://faux-api.com/api/v1/posts_4159209407585496");
-            ajax.setRequestHeader("Content-Type", "application/json");
-            ajax.send(data);
+            
+            ajax.send(formData);
         });
     </script>
   </body>
