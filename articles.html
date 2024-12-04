@@ -23,27 +23,11 @@
             </div>
         </div>
         <div class="content py-5">
-            <h1>Create New Post</h1>
-            <div id="alert-div">
+            <h1>Articles</h1>
+            <div id="article-list">
 
             </div>
-            <form id="postForm">
-                <div class="mb-3 row">
-                    <label for="title" class="col-sm-2 col-form-label">Title</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="title" placeholder="Enter Title">
-                    </div>
-                </div>
-                <div class="mb-3 row">
-                    <label for="description" class="col-sm-2 col-form-label">Description</label>
-                    <div class="col-sm-10">
-                        <textarea class="form-control" id="description" rows="3"></textarea>
-                    </div>
-                </div>
-                <div class="d-grid">
-                    <button id="submitButton" type="submit" class="btn btn-success">Create Post</button>
-                </div>
-            </form>
+
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
@@ -54,7 +38,7 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getFirestore, doc, setDoc, collection, getDocs, addDoc } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js'
+        import { getFirestore,query, doc, setDoc, collection, getDocs, addDoc } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js'
         // TODO: Add SDKs for Firebase products that you want to use
         // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -72,33 +56,13 @@
         const app = initializeApp(firebaseConfig);
         // Initialize Cloud Firestore and get a reference to the service
         const db = getFirestore(app);
-
-        // Form submission
-        const form = document.getElementById('postForm');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault(); // Prevent form refresh
-            const title = document.getElementById('title').value;
-            const description = document.getElementById('description').value;
-
-            try {
-                // Add a new document in collection
-                const postRef = await addDoc(collection(db, "articles"), {
-                    "title": title,
-                    "description": description
-                });
-
-
-                console.log(postRef)
-                document.getElementById("alert-div").innerHTML = `<div class="alert alert-success" role="alert">
-                    Post created successfully! To check data <a target="_blank" href="https://faux-api.com/api/v1/posts_4159209407585496/fetchRecentData">click here</a>.
-                </div>`;
-                // form.reset();
-            } catch (error) {
-                document.getElementById("alert-div").innerHTML = `<div class="alert alert-danger" role="alert">
-                Bad Request!
-            </div>`;
-            }
+        document.addEventListener("DOMContentLoaded", async function() {
+            const articleRef = await getDocs(query(collection(db, "articles")));
+        console.log(articleRef);
         });
+
+        
+        
     </script>
     <!-- <script>
         document.getElementById('postForm').addEventListener('submit', function (event) {
